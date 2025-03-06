@@ -1,188 +1,730 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Динамический Календарь</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .calendar {
-            width: 320px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        select {
-            padding: 5px;
-        }
-        .weekdays, .days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-        }
-        .weekdays div {
-            font-weight: bold;
-            padding: 5px 0;
-        }
-        .day {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            color: black;
-            background: #f9f9f9;
-        }
-        .day:hover {
-            background: #ddd;
-        }
-        .current-day {
-            background: #ff5733;
-            color: white;
-            font-weight: bold;
-        }
-    </style>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <title>Тақвими Рамазон</title>
 </head>
 <body>
-    <div class="calendar">
-        <div class="header">
-            <button onclick="prevMonth()">&#9665;</button>
-            <select id="monthSelect" onchange="updateCalendar()"></select>
-            <select id="yearSelect" onchange="updateCalendar()"></select>
-            <button onclick="nextMonth()">&#9655;</button>
-        </div>
-        <div class="weekdays" id="weekdays"></div>
-        <div class="days" id="calendarDays"></div>
-    </div>
+  <style>
+  /* Общие стили */
+body {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
 
-    <script>
-        const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
-                            "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-        const weekdayNames = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+/* Контейнер для адаптации */
+  
+footer{
+    background: linear-gradient(-45deg, #06f183, #1698ee, #05ac05, #287deb);
+ background-size: 400% 400%;
+ animation: gradient 15s ease infinite;
+    color: white;
+    padding: 10px;
+  font-style: normal;
+  text-align: start;
+}
+  header{
+    background-image: url('eid.gif');
+   /* background-size: 400% 400%;
+ animation: gradient 15s ease infinite;
+    */
+    width: none;
+    height: 350px;
+    color: white;
+    padding: 10px;
+}
 
-        let currentDate = new Date();
-        let currentMonth = currentDate.getMonth();
-        let currentYear = currentDate.getFullYear();
+main{
+    padding: 20px;
+    font-size: 18px;
+}
 
-        function createWeekdays() {
-            const weekdaysDiv = document.getElementById("weekdays");
-            weekdaysDiv.innerHTML = "";
-            weekdayNames.forEach(day => {
-                let div = document.createElement("div");
-                div.textContent = day;
-                weekdaysDiv.appendChild(div);
-            });
+/* Медиа-запросы для адаптации */
+@media (max-width: 768px) {
+    main {
+        font-size: 16px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 15px;
+    }
+
+    main {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+  body, pre {
+            font-weight: bold;
+            font-style: italic;
+            font-family: Georgia, 'Times New Roman', Times, serif;
         }
-
-        function createMonthYearSelectors() {
-            const monthSelect = document.getElementById("monthSelect");
-            const yearSelect = document.getElementById("yearSelect");
-
-            for (let i = 0; i < 12; i++) {
-                let option = document.createElement("option");
-                option.value = i;
-                option.textContent = monthNames[i];
-                monthSelect.appendChild(option);
-            }
-
-            for (let i = currentYear - 50; i <= currentYear + 10; i++) {
-                let option = document.createElement("option");
-                option.value = i;
-                option.textContent = i;
-                yearSelect.appendChild(option);
-            }
-
-            monthSelect.value = currentMonth;
-            yearSelect.value = currentYear;
+        #vaqt{
+            background: #2b2b2b;
+            border-radius: 5px;
         }
+    #list{
+        padding: 0;
+        margin: 0;
+        background: none;
+        box-shadow: none;
+    }
+        table {
+            border-radius: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #2b2b2b;
+            color: #ffffff;
+             
+            /* background: linear-gradient(120deg, rgb(169, 175, 171) 15%, rgba(231, 235, 236, 0.891) 67%); */
+            /* box-shadow: 5px 5px 5px 5px black; */
 
-        function updateCalendar() {
-            currentMonth = parseInt(document.getElementById("monthSelect").value);
-            currentYear = parseInt(document.getElementById("yearSelect").value);
-            generateCalendar(currentMonth, currentYear);
         }
-
-        function prevMonth() {
-            if (currentMonth === 0) {
-                currentMonth = 11;
-                currentYear--;
-            } else {
-                currentMonth--;
-            }
-            updateSelectors();
-            generateCalendar(currentMonth, currentYear);
+        th, td {
+            
+            text-decoration: solid;
+            font-family: 'Times New Roman', Times, serif;
+            padding: 10px;
+            text-align: none;
+            border-radius: 20px solid white;
+              
         }
-
-        function nextMonth() {
-            if (currentMonth === 11) {
-                currentMonth = 0;
-                currentYear++;
-            } else {
-                currentMonth++;
-            }
-            updateSelectors();
-            generateCalendar(currentMonth, currentYear);
+       
+        th {
+            margin: 2px;
+            /* border-radius: 20px; */
+ background: #2b2b2b;
+/* background: linear-gradient(0deg, rgb(174, 204, 204) 0%, rgb(209, 211, 216) 82%); */
+            
+color: rgb(243, 237, 237);
+            /* box-shadow: 2px 1px 2px 2px black, 5px 4px 3px 2px orange; */
         }
+       
+    h4{
+        font-size: 22px;
+        text-align: center;
+    }
+    h2{
+        font-size: 25px;
+        text-align: center;
+    }
+    a{
+         color: #f0f5f7;
+    }
+    a:hover{
+        color: #ffffff;
+    }
+    h2, h4{
+        color: #ffffff;
+    }
+  .vaqt{
+    font-size: 40px;
+    text-align: center;
+  }
+  .name{
+    font-size: 15px;
+    text-align: center;
+  }
+  .iftor{
+    padding-top: 0px;
+    
+  }
+  h3,h1{
+    text-align: center;
+  }
+  
+/* Светлая тема (по умолчанию) */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+}
 
-        function updateSelectors() {
-            document.getElementById("monthSelect").value = currentMonth;
-            document.getElementById("yearSelect").value = currentYear;
-        }
+/* Тёмная тема */
+[data-theme="dark"] {
+    --bg-color: #222;
+    --text-color: #ffffff;
+}
 
-        function generateCalendar(month, year) {
-            const calendarDays = document.getElementById("calendarDays");
-            calendarDays.innerHTML = "";
+/* Применение темы */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: block;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    transition: background 0.3s, color 0.3s;
+}
+  @keyframes gradient {
+ 0% {
+  background-position: 0% 50%;
+ }
+ 50% {
+  background-position: 100% 50%;
+ }
+ 100% {
+  background-position: 0% 50%;
+ }
+} 
+  
+  </style>
+  <header>
+  <h1>
+   Тақвими моҳи шарифи Рамазон 2025
+  </h1>
+  </header>
+  <main>
+  <table>
+    <tbody>
+      <tr>
+        <td>Пн</td>
+        <td>Вт</td>
+        <td>Ср</td>
+        <td>Чт</td>
+        <td>Пт</td>
+        <td>Сб</td>
+        <td>Вс</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><a href="#1">1</a></td>
+        <td><a href="#2">2</a></td>
+      </tr>
+      <tr>
+        <td><a href="#3">3</a></td>
+        <td><a href="#4">4</a></td>
+        <td><a href="#5">5</a></td>
+        <td><a href="#6">6</a></td>
+        <td><a href="#7">7</a></td>
+        <td><a href="#8">8</a></td>
+        <td><a href="#9">9</a></td>
+      </tr>
+      <tr>
+        <td><a href="#10">10</a></td>
+        <td><a href="#11">11</a></td>
+        <td><a href="#12">12</a></td>
+        <td><a href="#13">13</a></td>
+        <td><a href="#14">14</a></td>
+        <td><a href="#15">15</a></td>
+        <td><a href="#16">16</a></td>
+      </tr>
+      <tr>
+         <td><a href="#17">17</a></td>
+        <td><a href="#18">18</a></td>
+        <td><a href="#19">19</a></td>
+        <td><a href="#20">20</a></td>
+        <td><a href="#21">21</a></td>
+        <td><a href="#22">22</a></td>
+        <td><a href="#23">23</a></td>
+      </tr>
+      <tr>
+        <td><a href="#24">24</a></td>
+        <td><a href="#25">25</a></td>
+        <td><a href="#26">26</a></td>
+        <td><a href="#27">27</a></td>
+        <td><a href="#28">28</a></td>
+        <td><a href="#29">29</a></td>
+        <td><a href="#30">30</a></td>
+      </tr>
+      <tr>
+        <td><a href="">31</a></td>
+        <td><a href=""></a></td>
+        <td><a href=""></a></td>
+        <td><a href=""></a></td>
+        <td><a href=""></a></td>
+        <td><a href=""></a></td>
+        <td><a href=""></a></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <table>
+    <tbody>
+      <h3 id="1">Шанбе   «01-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:23</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:27</td>
+        </tr>
+    </tbody>
+    </table>
+    
+     <table>
+    <tbody>
+      <h3 id="2">Якшанбе   «02-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:22</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:28</td>
+        </tr>
+    </tbody>
+    </table>
+       
+        <table>
+    <tbody>
+      <h3 id="3">Душанбе   «03-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:20</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:29</td>
+        </tr>
+    </tbody>
+    </table>
+          
+           <table>
+    <tbody>
+      <h3 id="4">Сешанбе   «04-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:19</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:30</td>
+        </tr>
+    </tbody>
+    </table>
+             
+              <table>
+    <tbody>
+      <h3 id="5">Чоршанбе   «05-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:17</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:31</td>
+        </tr>
+    </tbody>
+    </table>
+                
+                 <table>
+    <tbody>
+      <h3 id="6">Панҷшанбе   «06-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:16</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:32</td>
+        </tr>
+    </tbody>
+    </table>
+                   
+                    <table>
+    <tbody>
+      <h3 id="7">Ҷумъа   «07-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:14</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:33</td>
+        </tr>
+    </tbody>
+    </table>
+                      
+                       <table>
+    <tbody>
+      <h3 id="8">Шанбе   «08-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:12</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:34</td>
+        </tr>
+    </tbody>
+    </table>
+                         
+         <table>
+    <tbody>
+      <h3 id="9">Якшанбе   «09-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:10</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:35</td>
+        </tr>
+    </tbody>
+    </table>
+           
+<table>
+    <tbody>
+      <h3 id="10">Душанбе   «10-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:09</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:36</td>
+        </tr>
+    </tbody>
+    </table>
+  
+<table>
+    <tbody>
+      <h3 id="11">Сешанбе   «11-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:08</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:37</td>
+        </tr>
+    </tbody>
+    </table>
+  
+<table>
+    <tbody>
+      <h3 id="12">Чоршанбе   «12-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:06</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:38</td>
+        </tr>
+    </tbody>
+    </table>
+  
+<table>
+    <tbody>
+      <h3 id="13">Панҷшанбе   «13-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:05</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:39</td>
+        </tr>
+    </tbody>
+    </table>
+  
+<table>
+    <tbody>
+      <h3 id="14">Ҷумъа   «14-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:03</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:40</td>
+        </tr>
+    </tbody>
+    </table>
+  
+<table>
+    <tbody>
+      <h3 id="15">Шанбе   «15-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:02</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:41</td>
+        </tr>
+    </tbody>
+    </table>
+  
+<table>
+    <tbody>
+      <h3 id="16">Якшанбе   «16-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">05:00</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:42</td>
+        </tr>
+    </tbody>
+    </table>
+  
+  <table>
+    <tbody>
+      <h3 id="17">Душанбе   «17-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:49</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:43</td>
+        </tr>
+    </tbody>
+    </table>
+    
+    <table>
+    <tbody>
+      <h3 id="18">Сешанбе   «18-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:57</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:44</td>
+        </tr>
+    </tbody>
+    </table>
+      
+      <table>
+    <tbody>
+      <h3 id="19">Чоршанбе   «19-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:56</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:45</td>
+        </tr>
+    </tbody>
+    </table>
+        
+        <table>
+    <tbody>
+      <h3 id="20">Панҷшанбе   «20-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:54</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:46</td>
+        </tr>
+    </tbody>
+    </table>
+          
+           <table>
+    <tbody>
+      <h3 id="21">Ҷумъа   «21-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:53</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:47</td>
+        </tr>
+    </tbody>
+    </table>
+             
+              <table>
+    <tbody>
+      <h3 id="22">Шанбе   «22-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:51</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:48</td>
+        </tr>
+    </tbody>
+    </table>
+                
+          <table>
+    <tbody>
+      <h3 id="23">Якшанбе   «23-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:50</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:49</td>
+        </tr>
+    </tbody>
+    </table>
+            
+ <table>
+    <tbody>
+      <h3 id="24">Душанбе   «24-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:49</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:50</td>
+        </tr>
+    </tbody>
+    </table>
+   
+   <table>
+    <tbody>
+      <h3 id="25">Сешанбе   «25-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:47</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:51</td>
+        </tr>
+    </tbody>
+    </table>
+     
+ <table>
+    <tbody>
+      <h3 id="26">Чоршанбе   «26-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:46</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:52</td>
+        </tr>
+    </tbody>
+    </table>
+   
+    <table>
+    <tbody>
+      <h3 id="27">Панҷшанбе   «27-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:44</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:53</td>
+        </tr>
+    </tbody>
+    </table>
+      
+       <table>
+    <tbody>
+      <h3 id="28">Ҷумъа   «28-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:43</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:54</td>
+        </tr>
+    </tbody>
+    </table>
+         
+          <table>
+    <tbody>
+      <h3 id="29">Шанбе   «29-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:41</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:55</td>
+        </tr>
+    </tbody>
+    </table>
+            
+             <table>
+    <tbody>
+      <h3 id="30">Якшанбе   «30-03-2025»</h3>
+      <tr> 
+        <td class="name">Саҳархури то</td>
+      <td></td>
+      <td class="iftor"><pre>          Ифтор</pre></td>
+        <tr>
+        <td class="vaqt">04:39</td>
+      <td class="vaqt">-</td>
+      <td class="vaqt">18:56</td>
+        </tr>
+    </tbody>
+    </table>
+                 </main>
+            <footer>
+              <p>© 2025.Тақвими моҳи шарифи Рамазон</p>
+              <p>email: komronbeksharipov6@gmail.com</p>
+              <p>°Web-Developer™: Komron Sharipov</p>
+              <p>® Все права защищены.</p>
+            </footer>
+                <script>
+// Функция установки темы
+function setTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+}
 
-            let firstDay = new Date(year, month, 1).getDay();
-            let lastDate = new Date(year, month + 1, 0).getDate();
+// Проверяем сохранённую тему или системные настройки
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+    setTheme(savedTheme);
+} else {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setTheme(prefersDark ? "dark" : "light");
+}
 
-            firstDay = firstDay === 0 ? 6 : firstDay - 1;
-
-            for (let i = 0; i < firstDay; i++) {
-                let emptyDiv = document.createElement("div");
-                calendarDays.appendChild(emptyDiv);
-            }
-
-            for (let day = 1; day <= lastDate; day++) {
-                let dayLink = document.createElement("a");
-                dayLink.classList.add("day");
-                dayLink.textContent = day;
-                dayLink.href = `events.html?date=${year}-${month + 1}-${day}`;
-
-                if (
-                    day === currentDate.getDate() &&
-                    month === currentDate.getMonth() &&
-                    year === currentDate.getFullYear()
-                ) {
-                    dayLink.classList.add("current-day");
-                }
-
-                calendarDays.appendChild(dayLink);
-            }
-        }
-
-        createWeekdays();
-        createMonthYearSelectors();
-        generateCalendar(currentMonth, currentYear);
-    </script>
+// Следим за изменением системных настроек
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    const newTheme = e.matches ? "dark" : "light";
+    setTheme(newTheme);
+});
+                </script>
 </body>
 </html>
