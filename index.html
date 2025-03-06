@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Динамический Календарь</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .calendar {
+            width: 320px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        select {
+            padding: 5px;
+        }
+        .weekdays, .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        .weekdays div {
+            font-weight: bold;
+            padding: 5px 0;
+        }
+        .day {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+            background: #f9f9f9;
+        }
+        .day:hover {
+            background: #ddd;
+        }
+        .current-day {
+            background: #ff5733;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar">
+        <div class="header">
+            <button onclick="prevMonth()">&#9665;</button>
+            <select id="monthSelect" onchange="updateCalendar()"></select>
+            <select id="yearSelect" onchange="updateCalendar()"></select>
+            <button onclick="nextMonth()">&#9655;</button>
+        </div>
+        <div class="weekdays" id="weekdays"></div>
+        <div class="days" id="calendarDays"></div>
+    </div>
+
+    <script>
+        const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
+                            "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+        const weekdayNames = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+
+        function createWeekdays() {
+            const weekdaysDiv = document.getElementById("weekdays");
+            weekdaysDiv.innerHTML = "";
+            weekdayNames.forEach(day => {
+                let div = document.createElement("div");
+                div.textContent = day;
+                weekdaysDiv.appendChild(div);
+            });
+        }
+
+        function createMonthYearSelectors() {
+            const monthSelect = document.getElementById("monthSelect");
+            const yearSelect = document.getElementById("yearSelect");
+
+            for (let i = 0; i < 12; i++) {
+                let option = document.createElement("option");
+                option.value = i;
+                option.textContent = monthNames[i];
+                monthSelect.appendChild(option);
+            }
+
+            for (let i = currentYear - 50; i <= currentYear + 10; i++) {
+                let option = document.createElement("option");
+                option.value = i;
+                option.textContent = i;
+                yearSelect.appendChild(option);
+            }
+
+            monthSelect.value = currentMonth;
+            yearSelect.value = currentYear;
+        }
+
+        function updateCalendar() {
+            currentMonth = parseInt(document.getElementById("monthSelect").value);
+            currentYear = parseInt(document.getElementById("yearSelect").value);
+            generateCalendar(currentMonth, currentYear);
+        }
+
+        function prevMonth() {
+            if (currentMonth === 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else {
+                currentMonth--;
+            }
+            updateSelectors();
+            generateCalendar(currentMonth, currentYear);
+        }
+
+        function nextMonth() {
+            if (currentMonth === 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else {
+                currentMonth++;
+            }
+            updateSelectors();
+            generateCalendar(currentMonth, currentYear);
+        }
+
+        function updateSelectors() {
+            document.getElementById("monthSelect").value = currentMonth;
+            document.getElementById("yearSelect").value = currentYear;
+        }
+
+        function generateCalendar(month, year) {
+            const calendarDays = document.getElementById("calendarDays");
+            calendarDays.innerHTML = "";
+
+            let firstDay = new Date(year, month, 1).getDay();
+            let lastDate = new Date(year, month + 1, 0).getDate();
+
+            firstDay = firstDay === 0 ? 6 : firstDay - 1;
+
+            for (let i = 0; i < firstDay; i++) {
+                let emptyDiv = document.createElement("div");
+                calendarDays.appendChild(emptyDiv);
+            }
+
+            for (let day = 1; day <= lastDate; day++) {
+                let dayLink = document.createElement("a");
+                dayLink.classList.add("day");
+                dayLink.textContent = day;
+                dayLink.href = `events.html?date=${year}-${month + 1}-${day}`;
+
+                if (
+                    day === currentDate.getDate() &&
+                    month === currentDate.getMonth() &&
+                    year === currentDate.getFullYear()
+                ) {
+                    dayLink.classList.add("current-day");
+                }
+
+                calendarDays.appendChild(dayLink);
+            }
+        }
+
+        createWeekdays();
+        createMonthYearSelectors();
+        generateCalendar(currentMonth, currentYear);
+    </script>
+</body>
+</html>
