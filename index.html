@@ -50,6 +50,62 @@ main{
     font-size: 18px;
 }
 
+button{
+  background: rgb(66,208,0);
+background: -moz-linear-gradient(120deg, rgba(66,208,0,1) 7%, rgba(0,209,40,1) 25%);
+background: -webkit-linear-gradient(120deg, rgba(66,208,0,1) 7%, rgba(0,209,40,1) 25%);
+background: linear-gradient(120deg, rgba(66,208,0,1) 7%, rgba(0,209,40,1) 25%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#42d000",endColorstr="#00d128",GradientType=1);
+  border-radius: 20px;
+  border: 1px none;
+  font-face: bold;
+    padding: 10px 20px;
+  margin: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  transition: 1.5s ;
+}
+
+.modal, .modalsecond, .modaltar, .modalfitr{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 5px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+  transition: 1.5s ;
+}
+
+.modal-content, .modal-contentsecond, .modal-contenttar, .modal-contentfitr {
+    background: #2b2b2b;
+  color: white;
+    padding: 18px 18px 18px 18px;
+  transition: 2s;
+    border-radius: 8px;
+    width: 300px;
+  height: none;
+    text-align: start;
+display: relative;
+    position: absolute;
+  font-size: 17px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  font-style: normal;
+}
+
+.close, .closesecond, .closetar, .closefitr{
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+  transition: 1.5s ;
+}
 /* Медиа-запросы для адаптации */
 @media (max-width: 768px) {
     main {
@@ -182,14 +238,48 @@ body {
   background-position: 0% 50%;
  }
 } 
-  
+  .tarovex{
+    background: transparent;
+    backdrop-filter: blur(15px);
+    width: 100px;
+    height: 100px;
+    padding: 0px;
+    margin: 8px;
+    margin-top: 0px;
+    position: none;
+    bottom: 20px;
+    left: 0px; 
+    color: white;
+    border-radius: 10px; 
+    border: 1px solid gold; 
+    cursor: pointer;
+  }
   </style>
   <header>
   <h1>
    Тақвими моҳи шарифи Рамазон 2025
   </h1>
+    <br>
+    <br>
+     <br>
+    <br>
+     <br>
+    
+    <button id="openModaltar" class="tarovex">Тасбехи таровеҳ</button>
+
+    <div id="modaltar" class="modal">
+        <div class="modal-content">
+            <span class="closetar"></span>
+            <h2>Тасбехи таровеҳ</h2>
+           <p>Субҳона зилмулки вал малакут. Субҳона зилъиззати вал ъазамати вал қудрати вал кибриёи вал ҷабарут. Субҳонал маликил ҳаййиллази ло яному ва ло ямут. Суббуҳун, Қуддусун, Раббуно ва Раббулмалоикати варруҳ. Ло илоҳа иллаллоҳу настағфируллоҳ, насъалукал ҷанната ва наъузу бика минаннор</p>
+        </div>
+    </div>
+    
+
+   
   </header>
   <main>
+    
   <table>
     <tbody>
       <tr>
@@ -257,7 +347,25 @@ body {
       </tr>
     </tbody>
   </table>
-  
+  <button id="openModal">НИЯТИ РУЗА</button>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close"></span>
+            <h2>Нияти руза</h2>
+            <p> Араби: Валисавми ғадин мин шаҳри рамазоналлазӣ фаризатан навайту.&#129330;
+              <br>--------------------------------<br> 
+              Тоҷикӣ: Ният кардам рӯзаи моҳи шарифи Рамазон аз субҳи содиқ то фурӯ рафтани офтоб.&#129330;</p>
+        </div>
+    </div>
+    <button id="openModalsecond">ДУЪОИ ИФТОР</button>
+      <div id="modalsecond" class="modalsecond">
+        <div class="modal-contentsecond">
+            <span class="closesecond"></span>
+            <h2>Дуъои Ифтор</h2>
+            <p>арабӣ: Аллоҳумма лака сумту ва бика оманту ва алайка таваккалту ва ало ризқика афтарту, бираҳматика ё арҳамар роҳимин. &#129330;<br>-----------------------------<br>тоҷикӣ: Парвардигоро! Барои ризои Ту рўза доштам ва ба Ту имон овардам ва ба ту таваккал дорам ва ба ризқи додаи Ту ифтор кардам.&#129330;</p>
+        </div>
+    </div>
   <table>
     <tbody>
       <h3 id="1">Шанбе   «01-03-2025»</h3>
@@ -699,7 +807,7 @@ body {
       <tr> 
         <td class="name">Саҳархури то</td>
       <td></td>
-      <td class="iftor"><pre>          Ифтор</pre></td>
+       <td class="iftor"><pre>          Ифтор</pre></td>
         <tr>
         <td class="vaqt">04:39</td>
       <td class="vaqt">-</td>
@@ -735,6 +843,67 @@ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e)
     const newTheme = e.matches ? "dark" : "light";
     setTheme(newTheme);
 });
+            document.getElementById('openModal').addEventListener('click', function() {
+    document.getElementById('modal').style.display = 'flex';
+});
+
+document.querySelector('.close').addEventListener('click', function() {
+    document.getElementById('modal').style.display = 'none';
+});
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('modal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+            // дуъои ифтор кнопки
+            document.getElementById('openModalsecond').addEventListener('click', function() {
+    document.getElementById('modalsecond').style.display = 'flex';
+});
+
+document.querySelector('.closesecond').addEventListener('click', function() {
+    document.getElementById('modalsecond').style.display = 'none';
+});
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('modalsecond');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+  
+            // tarovex
+              document.getElementById('openModaltar').addEventListener('click', function() {
+    document.getElementById('modaltar').style.display = 'flex';
+});
+
+document.querySelector('.closetar').addEventListener('click', function() {
+    document.getElementById('modaltar').style.display = 'none';
+});
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('modaltar');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+            //fitri ruza
+      document.getElementById('openModalfitr').addEventListener('click', function() {
+    document.getElementById('modalfitr').style.display = 'flex';
+});
+
+document.querySelector('.closefitr').addEventListener('click', function() {
+    document.getElementById('modalfitr').style.display = 'none';
+});
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('modalfitr');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});      
+  
                 </script>
 </body>
 </html>
