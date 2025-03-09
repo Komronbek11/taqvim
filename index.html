@@ -257,6 +257,11 @@ body {
     border: 1px solid gold; 
     cursor: pointer;
   }
+     #datetime{
+    font-size: 22px;
+    font-style: normal;
+    font-family: "Poppins", sans-serif;
+     }
   </style>
   <header>
   <h1>
@@ -282,6 +287,7 @@ body {
    
   </header>
   <main>
+      <p id="datetime">Боргузорӣ...</p>
     
   <table>
     <tbody>
@@ -826,6 +832,37 @@ body {
               <p>® Все права защищены.</p>
             </footer>
                 <script>
+                  function updateDateTime() {
+            const now = new Date();
+
+            // Рӯйхати рӯзҳои ҳафта
+            const days = ["Якшанбе", "Душанбе", "Сешанбе", "Чоршанбе", "Панҷшанбе", "Ҷумъа", "Шанбе"];
+
+            // Рӯйхати моҳҳо
+            const months = [
+                "Январ", "Феврал", "Март", "Апрел", "Май", "Июн",
+                "Июл", "Август", "Сентябр", "Октябр", "Ноябр", "Декабр"
+            ];
+
+            // Формат кардани сана
+            const dayName = days[now.getDay()];
+            const day = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+
+            // Формат кардани вақт
+            const timeStr = now.toLocaleTimeString('ru-RU'); // Время можно оставить русским форматом
+
+            // Намоиши натиҷа
+            document.getElementById('datetime').innerHTML = `Имрӯз: ${dayName}, ${day} ${month} ${year}, Соат: ${timeStr}`;
+        }
+
+        // Навсозӣ ҳар 1 сония
+        setInterval(updateDateTime, 1000);
+
+        // Даъвати функсия ҳангоми бор кардани саҳифа
+        updateDateTime();
+            
 // Функция установки темы
 function setTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
